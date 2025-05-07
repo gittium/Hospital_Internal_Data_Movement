@@ -1,5 +1,5 @@
 
-from leanbasic.ETL.Dynamic_Table.create_table import create_table
+from Dynamic_Table.create_table import create_table
 from connect import connection
 
 conn = connection()

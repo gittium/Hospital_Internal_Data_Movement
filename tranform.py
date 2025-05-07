@@ -20,17 +20,41 @@ def nine_address(row):
     
 
 
+# def tranform_data(raw_data):
+    
+
+    
+    
+#     rows = list(raw_data)
+    
+#     list_row_dict = []
+    
+#     for row in rows:
+#         row_dict = {
+#         'hospital_name' : upper_name(row[0]),
+#         'hospital_branch' : upper_name(row[1]),
+#         'contact' : standardize_contact(row[2]),
+#         'patient_name' : nine_address(row[3])
+#         }
+#         list_row_dict.append(row_dict)
+    
+#     return list_row_dict
+
+
+
+# cleaned_data = [
+#     ["Sirirat", "CNX", "+6680",  "eaaf_fbad"],
+#     ["Sirirat", "CNX", "+6680", "eaaf_fbad"],
+#     ["Sirirat", "CNX", "+6680",  "eaaf_fbad"]
+# ]
+# print(tranform_data(cleaned_data))
 def tranform_data(raw_data):
+    # Single row is passed, no need to convert to list
+    row_dict = {
+        'hospital_name': upper_name(raw_data[1]),
+        'hospital_branch': upper_name(raw_data[2]),
+        'contact': standardize_contact(raw_data[3]),
+        'patient_name': nine_address(raw_data[4])
+    }
     
-    
-    row = list(raw_data)
-    row[1] = upper_name(row[1])
-    row[2] = upper_name(row[2])
-    row[3] = standardize_contact(row[3])
-    row[4] = nine_address(row[4])
-    
-    return row
-
-
-
-    
+    return row_dict

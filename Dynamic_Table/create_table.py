@@ -1,6 +1,6 @@
 # from scan_schema import scan_table
-from gen_sql_table import gen_sql_table
-from scan_python_schema import scan_python_schema
+from Dynamic_Table.gen_sql_table import gen_sql_table
+from Dynamic_Table.scan_python_schema import scan_python_schema
 
 
 def create_table(cleaned_data , new_table , conn , headers):

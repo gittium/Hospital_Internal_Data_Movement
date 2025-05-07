@@ -1,14 +1,16 @@
-from leanbasic.ETL.Extract.extract_postgres import extract_data 
+from Extract.extract_postgres import extract_data 
 from tranform import tranform_data 
 from load import load_data
-from leanbasic.ETL.Extract.extract_csv import fetch_csv
-from leanbasic.ETL.Extract.extract_excel import fetch_excel
-from leanbasic.ETL.Extract.extract_api import fetch_api
+from Extract.extract_csv import fetch_csv
+from Extract.extract_excel import fetch_excel
+from Extract.extract_api import fetch_api
 from error_handling import validate_field_type, validate_empty , validate_num_rows
-from hash_data import final_hashed
-from leanbasic.ETL.Dynamic_Table.scan_schema import scan_table
+from hash_data import  final_hashed2
+from Dynamic_Table.scan_schema import scan_table
 import psycopg2
 from connect import connection
+from Dynamic_Table.scan_python_schema import scan_python_schema
+from Dynamic_Table.gen_sql_table import gen_sql_table
 
 
 conn = connection()
@@ -53,19 +55,32 @@ def run_etl():
             validate_empty(row)
             
             print("validate raw data success")
-            
+            print("start tranform")
             cleaned_data = tranform_data(row)
-            cleaned_data = final_hashed(cleaned_data ,mask_field ,salt = "nuhospital"  )
+            print("tranform success")
+            cleaned_data = final_hashed2(cleaned_data ,mask_field ,salt = "nuhospital"  )
             print("hashed success")
             cleaned_row.append(cleaned_data)
             print("clean_module_success")
     except Exception as e :
         print(f"row{i}" ,e )
+        
+    print(cleaned_row)
+    headers = list(cleaned_row[0].keys())
+    schema = scan_python_schema(cleaned_row, headers)
+
+    # 5. Generate Table
+    table_name = input("Enter destination table name: ")
+    create_sql = gen_sql_table(table_name, schema)
+    
+    cur = conn.cursor()
+    cur.execute(create_sql)
+    conn.commit()
     
     
     
     
-    load_data(cleaned_row)
+    load_data(cleaned_row , "test_clean1" , conn)
     print("load_module_sucess")
     
 if __name__=="__main__":

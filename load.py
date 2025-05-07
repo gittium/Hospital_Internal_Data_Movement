@@ -1,23 +1,27 @@
 import psycopg2
-from leanbasic.ETL.Dynamic_Table.create_table import create_table
+from Dynamic_Table.create_table import create_table
 
-def load_data(cleaned_data):
-    
-    conn = psycopg2.connect(host = "localhost" , port = "5432" , user = "postgres" , password = "admin" , dbname = "postgres")
+def load_data(cleaned_data, table_name, conn):
     print("load connection success")
-    
     cur = conn.cursor()
-    
-    
-    
-    
-    
+
     for row in cleaned_data:
-        cur.execute("INSERT INTO cleaned_data(hospital_name , hospital_branch , contact , address , patient_name) VALUES(%s ,%s , %s , %s , %s);",(row[1] , row[2] , row[3] , row[4] , row[5]))
-    
+        columns = list(row.keys())              # ['hospital_name', 'contact', ...]
+        values = list(row.values())             # ['Sirirat', '+6680', ...]
+
+        placeholders = ", ".join(["%s"] * len(values))     # '%s, %s, %s, ...'
+        column_names = ", ".join(columns)
+
+        insert_sql = f"""
+            INSERT INTO {table_name} ({column_names})
+            VALUES ({placeholders});
+        """
+
+        cur.execute(insert_sql, values)
+
     conn.commit()
-    print("load success")
+    print("✅ load success")
     cur.close()
-    print("load cursur() closed")
-    conn.close
-    print("load connection closed")
+    print("✅ cursor closed")
+    conn.close()
+    print("✅ connection closed")
