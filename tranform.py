@@ -12,11 +12,7 @@ def standardize_contact(row):
     else :
         return row
     
-def nine_address(row):
-    if row.isalnum() :
-        return "99999"
-    else :
-        return "888"
+
     
 
 
@@ -54,7 +50,7 @@ def tranform_data(raw_data):
         'hospital_name': upper_name(raw_data[1]),
         'hospital_branch': upper_name(raw_data[2]),
         'contact': standardize_contact(raw_data[3]),
-        'patient_name': nine_address(raw_data[4])
+        'patient_name': raw_data[4]
     }
     
     return row_dict

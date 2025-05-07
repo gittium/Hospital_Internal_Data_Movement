@@ -69,8 +69,8 @@ def run_etl():
     headers = list(cleaned_row[0].keys())
     schema = scan_python_schema(cleaned_row, headers)
 
-    # 5. Generate Table
-    table_name = input("Enter destination table name: ")
+    
+    table_name = input("Enter Destination Table Name: ")
     create_sql = gen_sql_table(table_name, schema)
     
     cur = conn.cursor()
@@ -80,7 +80,7 @@ def run_etl():
     
     
     
-    load_data(cleaned_row , "test_clean1" , conn)
+    load_data(cleaned_row , table_name , conn)
     print("load_module_sucess")
     
 if __name__=="__main__":
