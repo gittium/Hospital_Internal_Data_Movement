@@ -1,26 +1,29 @@
-from Extract.extract_postgres import extract_data 
-from tranform import tranform_data 
+from Extract.extract_postgres import extract_postgres 
+
 from load import load_data
 from Extract.extract_csv import fetch_csv
 from Extract.extract_excel import fetch_excel
 from Extract.extract_api import fetch_api
-from error_handling import validate_field_type, validate_empty , validate_num_rows
+from error_handling import validate_field_type, validate_empty 
 from hash_data import  final_hashed2
-from Dynamic_Table.scan_schema import scan_table
+
 import psycopg2
 from connect import connection
-from Dynamic_Table.scan_python_schema import scan_python_schema
-from Dynamic_Table.gen_sql_table import gen_sql_table
+
+
+from Dynamic_Table.create_table import create_table
 
 
 conn = connection()
-
+        
+    
 def run_etl():
     
     print("which data type")
     print("1.csv")
     print("2.excel")
     print("3.postgres")
+    print("4.api")
     # raw_data = extract_data()
     
     
@@ -29,16 +32,19 @@ def run_etl():
     
     match option:
         case "1" :
-            raw_data = fetch_csv()
+            raw_data , header = fetch_csv('dummy_data.csv')
         case "2" : 
-            raw_data = fetch_excel()
+            raw_data , header = fetch_excel('dummy_data.xlsx')
         case "3" :
-            raw_data = extract_data()
+            table_name = input("Enter Table Name: ")
+            raw_data , header = extract_postgres(table_name)
+        case "4" :
+            raw_data = fetch_api('http://127.0.0.1:8000/mock-patient')
         case _:
             print("not supported")
             
     print("extract_module_success")
-    
+  
     
 
 
@@ -46,45 +52,43 @@ def run_etl():
     mask_field = ['patient_name']    
   
     
-    cleaned_row = []
     
+  
     try:    
         for i , row in enumerate(raw_data):
-            validate_num_rows(row)
-            validate_field_type(row)
-            validate_empty(row)
+            # validate_num_rows(row)
+            # validate_field_type(row)
+            # validate_empty(row)
             
             print("validate raw data success")
-            print("start tranform")
-            cleaned_data = tranform_data(row)
-            print("tranform success")
-            cleaned_data = final_hashed2(cleaned_data ,mask_field ,salt = "nuhospital"  )
+            
+            cleaned_data = [dict(zip(header, row)) for row in raw_data]
+            # print("start tranform")
+            # cleaned_data = tranform_data(row)   #cleaned_data is a dict
+            # print("tranform success")
+            print( "start hash")
+            hashed_data = final_hashed2(cleaned_data ,mask_field ,salt = "nuhospital"  )
             print("hashed success")
-            cleaned_row.append(cleaned_data)
+            print(hashed_data)
             print("clean_module_success")
     except Exception as e :
         print(f"row{i}" ,e )
         
-    print(cleaned_row)
-    headers = list(cleaned_row[0].keys())
-    schema = scan_python_schema(cleaned_row, headers)
-
     
-    table_name = input("Enter Destination Table Name: ")
-    create_sql = gen_sql_table(table_name, schema)
+    
+    new_table_name = input("Enter Destination Table Name: ")
+    new_create_table = create_table(cleaned_data , new_table_name , conn , header)
     
     cur = conn.cursor()
-    cur.execute(create_sql)
+    cur.execute(new_create_table)
     conn.commit()
     
     
     
     
-    load_data(cleaned_row , table_name , conn)
+    load_data(cleaned_data, new_table_name , conn)
     print("load_module_sucess")
     
 if __name__=="__main__":
     run_etl()
-        
-    
     

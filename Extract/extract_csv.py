@@ -1,11 +1,12 @@
 import csv
 import os
 
-def fetch_csv(file_path):
+def fetch_csv(file):
     
     folder_path = os.path.dirname(os.path.abspath(__file__))
-    data_path = os.path.join(folder_path,'Data')
-    file_path = os.path.join(data_path,file_path)
+    before_data_path = os.path.dirname(folder_path)
+    data_path = os.path.join(before_data_path,'Data')
+    file_path = os.path.join(data_path,file)
     print(file_path)
     
     csv_row = []
@@ -15,12 +16,17 @@ def fetch_csv(file_path):
     
     with open(file_path , newline='' , encoding='utf-8') as file:
         reader = csv.reader(file)
-        next(reader)   # skipp first row that's header
+        list_csv = list(reader)   
+     
         
-        for row in reader:
+        for row in list_csv:
+            if list_csv.index(row) ==0:
+                continue
             csv_row.append(row)
             
-    return csv_row
+    return csv_row , list_csv[0]
+
+
 
 
 

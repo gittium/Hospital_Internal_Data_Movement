@@ -6,7 +6,7 @@ import psycopg2
 conn = psycopg2.connect(host="localhost", port="5432" , user="postgres" , password="admin" , dbname="postgres")
 print("connection_success")
 
-def scan_table(table , conn):
+def scan_schema(table , conn):
     cur = conn.cursor()
     
     
@@ -32,7 +32,7 @@ def scan_table(table , conn):
     cur.close()
     return schema
 
-scan_table("hospital" , conn)
+# scan_schema("hospital" , conn)
     
     
     

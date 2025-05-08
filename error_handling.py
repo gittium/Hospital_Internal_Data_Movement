@@ -21,7 +21,7 @@ def validate_empty(rows):
         if not str(field).strip():
             raise ValueError("got empty data")   
     
-def validate_num_rows(row):
-    expected_field = ["id" , "hospital_name" , "hospital_branch" , "contact" ,  "patient_name"]
-    if len(row) != len(expected_field):
-        raise ValueError(f"schema validation failed, exptected {len(expected_field)} rows got only {len(row)}: {row} " )
+# def validate_num_rows(row):
+    
+#     if len(row) < 0:
+#         raise ValueError(f"schema validation failed, exptected {len(expected_field)} rows got only {len(row)}: {row} " )

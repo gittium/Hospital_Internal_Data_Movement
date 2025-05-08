@@ -1,0 +1,11 @@
+pandas   
+#request apis
+requests
+#upload to s3
+boto3
+#connect postgresql
+sqlalchemy
+#driver for postgresql using by sqlalchemy   
+psycopg2-binary
+python-dotenv
+openpyxl

@@ -5,11 +5,11 @@ from connect import connection
 conn = connection()
 
 
-cleaned_data = [
-    ["Sirirat", "CNX", "+6680", 999, "eaaf_fbad"]
-]
+cur = conn.cursor()
 
-headers = ["hospital_name", "branch", "contact", "address", "patient_name"]
-
-test = create_table(cleaned_data , "test_dynamic_hospital" ,conn ,  headers)
-print(test)
+cur.execute("""INSERT INTO hospital (hospital_name , hospital_branch , contact , patient_name)
+VALUES ('Sirirat' , 'Bangkok' , '+6680' , 'Nattapong')""")
+cur.execute("""INSERT INTO hospital (hospital_name , hospital_branch , contact , patient_name)
+VALUES ('Sirirat' , 'indo' , '+6680' , 'sririrat')""")
+conn.commit()
+print("✅ load success")

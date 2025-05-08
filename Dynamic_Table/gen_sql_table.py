@@ -2,7 +2,7 @@
 
 
 
-def gen_sql_table(table_name , schema):
+def gen_sql_table(new_table_name , schema):
     column = []
     
     
@@ -23,9 +23,10 @@ def gen_sql_table(table_name , schema):
         column.append(f"{col_name}  {col_type}")     #COLUMN DATATYPE
     column_sql = ",\n".join(column)  #join will only add ,\n between string inside list 
 
-    create_table = f"""CREATE TABLE IF NOT EXISTS {table_name}(
+    create_table = f"""CREATE TABLE IF NOT EXISTS {new_table_name}(
                         {column_sql} ); """
                             
      
     return create_table 
+
 

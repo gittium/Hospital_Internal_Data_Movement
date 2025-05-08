@@ -53,6 +53,7 @@ def format_preserving_mask(value , hashed):
 def final_hashed2(row , mask_field , salt = "hospitalnu"):
     copy_dict = row.copy()
     
+    
     for field in mask_field:
         if field in copy_dict:
             hashed = deterministic_mask(copy_dict[field] , salt)
