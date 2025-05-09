@@ -1,5 +1,6 @@
 import csv
 import os
+import pandas as pd
 
 def fetch_csv(file):
     
@@ -9,22 +10,45 @@ def fetch_csv(file):
     file_path = os.path.join(data_path,file)
     print(file_path)
     
-    csv_row = []
+    
+    df = pd.read_csv(file_path)
+    header = df.columns.tolist()
+   
+    
+    rows = df.values.tolist()
+   
+    return rows  , header
+    
+    # csv_row = []
     
     
     
     
-    with open(file_path , newline='' , encoding='utf-8') as file:
-        reader = csv.reader(file)
-        list_csv = list(reader)   
+    # with open(file_path , newline='' , encoding='utf-8') as file:
+    #     reader = csv.reader(file)
+    #     list_csv = list(reader)   
      
         
-        for row in list_csv:
-            if list_csv.index(row) ==0:
-                continue
-            csv_row.append(row)
+    #     for row in list_csv:
+    #         if list_csv.index(row) ==0:
+    #             continue
+    #         csv_row.append(row)
             
-    return csv_row , list_csv[0]
+    # return csv_row , list_csv[0]
+
+
+
+# print(row)
+# for i in row:
+    
+#     for j in i:
+        
+#         print(j)
+#     break
+         
+# print(head)
+
+
 
 
 

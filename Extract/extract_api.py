@@ -9,7 +9,10 @@ def fetch_api(url):
     
     if response.status_code == 200 :
         data = response.json()
-        return data
+        first = data[0]
+        header = first.keys()
+        return data , list(header)
+        
         
         
         # fields = list(data[0].keys())
@@ -34,8 +37,9 @@ def fetch_api(url):
     # else :
     #     print("cant fetch api")
             
-
-# fetch_api('http://127.0.0.1:8000/mock-patient')
+# api , head = fetch_api('http://127.0.0.1:8000/mock-patient')
+# print(api)
+# print(head)
 
 
         
