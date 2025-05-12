@@ -6,12 +6,12 @@ from Extract.extract_excel import fetch_excel
 from Extract.extract_api import fetch_api
 from error_handling import validate_field_type, validate_empty , validate_num_rows
 from hash_data import  final_hashed2 , final_hashed3
-
+from Dynamic_Table.gen_sql_table import gen_sql_table
 import psycopg2
 from connect import connection
 
 
-from Dynamic_Table.create_table import create_table
+
 
 
 conn = connection()
@@ -59,7 +59,7 @@ def run_etl():
 
 
     
-    mask_field = ['patient_name']    
+    mask_field = ['ชื่อนามสกุล','รหัสบัตรประชาชน' ,'เลขกรมธรรม์']    
   
     
     
@@ -86,10 +86,10 @@ def run_etl():
     except Exception as e :
         print(f"row{i}" ,e )
         
+    # print(hashed_rows)
     print(hashed_rows)
-    
     new_table_name = input("Enter Destination Table Name: ")
-    new_create_table = create_table(hashed_rows , new_table_name , conn , header)
+    new_create_table = gen_sql_table(new_table_name , hashed_rows)
     print(new_create_table)
     cur = conn.cursor()
     cur.execute(new_create_table)

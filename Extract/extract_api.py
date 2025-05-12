@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 def fetch_api(url):
     # create variable to get api
@@ -8,13 +9,30 @@ def fetch_api(url):
     
     
     if response.status_code == 200 :
+        
+        data = response.content.decode('utf-8-sig')
         data = response.json()
-        first = data[0]
-        header = first.keys()
-        return data , list(header)
+        df = pd.DataFrame(data)
+        
+        print(df.columns.tolist())
+        datetime = ['วันเกิด' , 'วันที่เข้ารักษา' , 'วันที่จำหน่าย']
+        
+        for date in datetime:
+            df[date] = pd.to_datetime(df[date])
+            
         
         
         
+        header = df.columns.tolist()
+        rows = df.values.tolist()
+        return rows , list(header)
+        
+        
+        
+rows , header = fetch_api('http://127.0.0.1:8000/mock-patient')
+print(rows)
+print(header)
+
         # fields = list(data[0].keys())
         # print(fields)
     #     fields = ["hospital_name", "hostpital_branch", "contact" , "patient_name"]

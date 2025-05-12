@@ -2,6 +2,7 @@ import hashlib
 from Extract.extract_csv import fetch_csv
 from Extract.extract_excel import fetch_excel
 from Extract.extract_api import fetch_api
+from Extract.extract_postgres import extract_postgres
 
 def deterministic_mask(value , salt="nuhospital"):
     return hashlib.sha256((salt + str(value)).encode()).hexdigest()
@@ -67,7 +68,7 @@ def final_hashed2(row , mask_field , salt = "hospitalnu"):
 
     
 
-mask_field = ['patient_name']  
+mask_field = ['ชื่อนามสกุล','รหัสบัตรประชาชน' ,'เลขกรมธรรม์']  
 
 # raw_data , head = fetch_excel('hospital_data.xlsx')
 # raw_data = [dict(zip(head, row)) for row in raw_data]
@@ -90,10 +91,11 @@ def final_hashed3(row , mask_field , salt = "hospitalnu"):
             print(f"after format {fortmat_hashed}")
             row[field] = fortmat_hashed
             print(row)
-            return row
+    
             
       
         else:print("invalid")
+    return row
     
             
 # rows = []
@@ -102,3 +104,10 @@ def final_hashed3(row , mask_field , salt = "hospitalnu"):
 #     rows.append(hash_row)
     
 # print(rows)
+
+rows , header = extract_postgres('hospital')  
+
+dict_row = [dict(zip(header, row)) for row in rows]
+
+for row in dict_row:
+    print(final_hashed3(row, mask_field , salt="nuhos"))

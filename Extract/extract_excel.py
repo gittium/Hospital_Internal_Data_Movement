@@ -12,10 +12,21 @@ def fetch_excel(file):
 
    
     df = pd.read_excel(file_path)
+    
+    datetime_header = ['วันเกิด' , 'วันที่เข้ารักษา'  , 'วันที่จำหน่าย']
+    
+    for head in datetime_header:
+        df[head] = pd.to_datetime(df[head])
+        print(df[head].dtypes)
+        
     header = df.columns.tolist()
-   
+    
     
     rows = df.values.tolist()
    
     return rows  , header
 
+rows , header = fetch_excel('mock_patient.xlsx')
+print(rows)
+
+print(header)

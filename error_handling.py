@@ -3,16 +3,18 @@ from Extract.extract_excel import fetch_excel
 from Extract.extract_postgres import extract_postgres
 from Extract.extract_api import fetch_api
 import pandas as pd
+from datetime import date , datetime
 
-int_field = [ 'id' , 'contact']
-string_field = ['hospital_name' , 'hostpital_branch' , 'patient_name']
+
+datetime_field = ['วันเกิด' , 'วันที่เข้ารักษา' , 'วันที่จำหน่าย']
+string_field = ['รหัสผู้ป่วย' , 'ชื่อนามสกุล' ,'รหัสบัตรประชาชน', 'วันเกิด', 'เพศ', 'เบอร์โทรศัพท์', 'อีเมล', 'ที่อยู่', 'โรคประจำตัว', 'เลขกรมธรรม์']
 def validate_field_type(row):
 
    
     for key in row :
-        if key in int_field:
-            if not isinstance (row[key] , int ):
-                raise ValueError(f"invalid type {row[key]} is not int")
+        if key in datetime_field:
+            if not isinstance (row[key] , (pd.Timestamp , datetime , date)):
+                raise ValueError(f"invalid type {row[key]} is not datetime")
            
             
         elif key in string_field:
@@ -20,7 +22,10 @@ def validate_field_type(row):
                 raise ValueError(f"invalide type {row[key]} is not string" )
     return print("valid type of data")
         
-        
+
+    
+    
+    
         
         
     
@@ -35,7 +40,7 @@ def validate_empty(row):
     
     
 def validate_num_rows(row):
-    fields = ['id' , 'hospital_name' , 'hospital_branch' , 'contact' , 'patient_name' ]
+    fields = ['รหัสผู้ป่วย', 'ชื่อนามสกุล', 'รหัสบัตรประชาชน', 'วันเกิด', 'เพศ', 'เบอร์โทรศัพท์', 'อีเมล', 'ที่อยู่', 'โรคประจำตัว', 'เลขกรมธรรม์', 'วันที่เข้ารักษา', 'วันที่จำหน่าย' ]
     if len(row) != len(fields):
         raise ValueError(f"schema validation failed, exptected {len(fields)} rows got {len(row)}: {row} " )
     
@@ -50,8 +55,17 @@ def validate_num_rows(row):
 # list = fetch_api('http://127.0.0.1:8000/mock-patient')
 # print(list)
 # for row in list:
+
+
 #     validate_num_rows(row)
         
 
 # validate_field_type(list)
 # validate_empty(list)
+rows , header = extract_postgres('hospital')
+
+zip_list = [dict(zip(header , row)) for row in rows]
+for row in zip_list:
+    validate_field_type(row)
+    validate_num_rows(row)
+    validate_empty(row)

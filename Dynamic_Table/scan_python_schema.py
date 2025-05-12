@@ -26,8 +26,9 @@
         
 #     return python_schema
 
-
-
+import pandas as pd
+from pandas import Timestamp
+from gen_sql_table import gen_sql_table
 
 
 def scan_python_schema(cleaned_data, headers):
@@ -56,6 +57,18 @@ def scan_python_schema(cleaned_data, headers):
     return python_schema
 
 
+test = [{'รหัสผู้ป่วย': 'PAT0001', 'ชื่อนามสกุล': 'ffbae์ bf้ffabfcd', 'รหัสบัตรประชาชน': '3-2139-10339-88-7', 'วันเกิด': Timestamp('1997-02-11 00:000:00'), 'เพศ': 'หญิง', 'เบอร์โทรศัพท์': '+66 3930 9417', 'อีเมล': 'punnratn74@gmail.com', 'ที่อยู่': '25 หมู่ 47 ถ.ซูสารอ ต.หนองอิเฒ่า อ.หนองบัวโคก จ.พะเยา', 'โรคประจำตัว': 'สุขภาพดี', 'เลขกรมธรรม์': 'beb-00570459', 'วันที่เข้ารักษา': Timestamp('2021-11-13 00:00:00'), 'วันที่จำหน่าย': Timestamp('2024-10-25 00:00:00')},
+        {'รหัสผู้ป่วย': 'PAT0002', 'ชื่อนามสกุล': 'ffbae์ bf้ffabfcd', 'รหัสบัตรประชาชน': '3-2139-10339-88-7', 'วันเกิด': Timestamp('1997-02-11 00:000:00'), 'เพศ': 'หญิง', 'เบอร์โทรศัพท์': '+66 3930 9417', 'อีเมล': 'punnratn74@gmail.com', 'ที่อยู่': '25 หมู่ 47 ถ.ซูสารอ ต.หนองอิเฒ่า อ.หนองบัวโคก จ.พะเยา', 'โรคประจำตัว': 'สุขภาพดี', 'เลขกรมธรรม์': 'beb-00570459', 'วันที่เข้ารักษา': Timestamp('2021-11-13 00:00:00'), 'วันที่จำหน่าย': Timestamp('2024-10-25 00:00:00')}]
+
+sql = gen_sql_table('test' , test)
+print(sql)
+
+
+# print(type(test['รหัสผู้ป่วย']))
+
+# if isinstance((test['รหัสผู้ป่วย']), str):
+#             print('this is timestamp')
+# else:print('not')
 # data = [['Alice', '25', 'New York', '85.5'], ['Bob', '30', 'Los Angeles', '90.0'], ['Charlie', '35', 'Chicago', '78.0'], ['David', '40', 'Houston', '88.5'], ['Eva', '22', 'Phoenix', '92.0']]
 # headers = ['name', 'age', 'city', 'score']
 # cleaned_data = [dict(zip(headers, row)) for row in data]  # Convert to list of dictionaries
