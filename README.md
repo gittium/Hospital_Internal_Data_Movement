@@ -1,5 +1,5 @@
 Hello World this is my mini project for moving data between datasources for Internal Naresuan University Data
-
+#H1 hello
 For now 5/13/2025 this is a demo version that i using local databasesources to testing and load the data
 
 i also do some Data Privacy to cover PII data of patients by using hashlib to encode PII fields , format preserving mask to keep the shape of data appearance nearly original after done encoding
@@ -19,6 +19,6 @@ then we wil run
 
 after that we need to placing some files before we extract it we can placed it in folder name DATA
 
-and then we can run OUR MAIN FILE name : main_pipeline.py   to let the flow begin!!
+and then we can run OUR MAIN FILE name main_pipeline.py and run with it : ```python main_pipeline.py```   to let the flow begin!!
 
-after all the works now we will have the data we just threw it to DATA folder load into our Postgres Database we installed from the start .
+after all the works now we will have the data we just threw into DATA folder load into our Postgres Database we installed from the start .
