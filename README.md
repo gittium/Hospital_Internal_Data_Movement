@@ -15,7 +15,7 @@ first we need to install pip to let we install any python packages we need in th
 
 then we wil run
 
-pip install -r requirements    --to install any packages we need
+```pip install -r requirements```    --to install any packages we need
 
 after that we need to placing some files before we extract it we can placed it in folder name DATA
 
