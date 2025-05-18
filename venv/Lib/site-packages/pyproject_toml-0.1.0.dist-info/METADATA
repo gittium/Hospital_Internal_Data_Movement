@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: pyproject-toml
+Version: 0.1.0
+Summary: Project intend to implement PEP 517, 518, 621, 631 and so on.
+Author-email: Tang Ziya <tcztzy@hotmail.com>
+License: MIT
+Project-URL: homepage, https://github.com/pyproject-toml/pyproject-toml
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: <3.14,>=3.9
+Description-Content-Type: text/x-rst
+Requires-Dist: setuptools>=75.4.0
+Requires-Dist: wheel>=0.45.0
+Requires-Dist: pydantic>=2.9.2
+Requires-Dist: packaging>=24.2
+Requires-Dist: tomli>=2.1.0; python_version < "3.11"
+Provides-Extra: dev
+Requires-Dist: jaraco-path>=3.7.1; extra == "dev"
+Requires-Dist: pre-commit>=4.0.1; extra == "dev"
+Requires-Dist: pytest>=8.3.3; extra == "dev"
+Requires-Dist: tox-uv>=1.16.0; extra == "dev"
+
+pyproject-toml
+==============
+
+Project intend to implement PEP 517, 518, 621, 631 and so on.

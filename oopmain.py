@@ -3,7 +3,7 @@ from Extract.oopcsv import ExtractCsv
 from Extract.oopexcel import ExtractExcel
 from Extract.oopapi import ExtractAPI
 from Extract.connect import connection
-from Extract.ooppostgres import ExtractPosgres
+from leanbasic.ETL.Extract.oopsql import ExtractPosgres
 
 
 print("""

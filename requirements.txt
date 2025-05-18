@@ -10,3 +10,11 @@ psycopg2-binary
 python-dotenv
 openpyxl
 faker
+pyproject-toml
+pymysql
+cx_Oracle
+protobuf
+dbt-core
+packaging
+streamlit
+limits

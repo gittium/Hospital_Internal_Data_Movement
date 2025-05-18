@@ -7,6 +7,7 @@ class Pipeline:
         self.extractor = extractor
         
     def run(self):
+    
         rows , header = self.extractor.extract()  #extract come from RuleExtract 
         
         print([dict(zip(header , row)) for row in rows])
