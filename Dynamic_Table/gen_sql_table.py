@@ -1,30 +1,37 @@
 
-
+from datetime import date
 import pandas as pd
 
-def gen_sql_table(new_table_name , hashed):
-    columns = []
+
+class GenTable:
     
-    first_dict = hashed[0]
-    list_column = list(first_dict.keys())
-    
-    for  i , key  in enumerate(first_dict):
+    def __init__(self , new_table_name , hashed , engine):
+        self.new_table_name = new_table_name
+        self.hashed = hashed
+
+    def gen_sql_table(self):
+        columns = []
         
-        column_name = list_column[i]
+        first_dict = self.hashed[0]
+        list_column = list(first_dict.keys())
         
-        if isinstance(first_dict[key], (pd.Timestamp)):
-            column_type = 'TIMESTAMP'
+        for  i , key  in enumerate(first_dict):
             
-        elif isinstance(first_dict[key] , str ):
-            column_type = 'VARCHAR(255)'
+            column_name = list_column[i]
             
-        columns.append(f"{column_name} {column_type}")
-    
-    column_sql = ",\n".join(columns) 
-    create_table = f"""CREATE TABLE IF NOT EXISTS {new_table_name}(
-                         {column_sql} ); """
-                        
-    return create_table
+            if isinstance(first_dict[key], (pd.Timestamp , date)):
+                column_type = 'TIMESTAMP'
+                
+            elif isinstance(first_dict[key] , str ):
+                column_type = 'VARCHAR(255)'
+                
+            columns.append(f"{column_name} {column_type}")
+        
+        column_sql = ",\n".join(columns) 
+        create_table = f"""CREATE TABLE IF NOT EXISTS {self.new_table_name}(
+                            {column_sql} ); """
+                            
+        return create_table
     
 
     

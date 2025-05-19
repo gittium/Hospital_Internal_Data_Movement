@@ -1,17 +1,19 @@
 import hashlib
-from Extract.extract_csv import fetch_csv
-from Extract.extract_excel import fetch_excel
-from Extract.extract_api import fetch_api
-from Extract.extract_postgres import extract_postgres
+# from Extract.extract_csv import fetch_csv
+# from Extract.extract_excel import fetch_excel
+# from Extract.extract_api import fetch_api
+# from Extract.extract_postgres import extract_postgres
+
+
 
 def deterministic_mask(value , salt="nuhospital"):
     return hashlib.sha256((salt + str(value)).encode()).hexdigest()
 
 def format_preserving_mask(value , hashed):
-    
+
     masked = ''
     index = 0
-    
+
     for char in str(value):
         if char.isdigit():
             while not hashed[index].isdigit():
@@ -27,58 +29,21 @@ def format_preserving_mask(value , hashed):
             masked+=char
             index+=1
                 
-    
+
     return masked
 
 
-# hashed = deterministic_mask(123 , salt = "hospital")
-# hashed = format_preserving_mask(123 , hashed)
-# print(hashed)
-#set pii index using dictionary
-#USING LIST
-# pii_index = {
-#     'patient_name' : 4
-# }
 
 
 
-# def final_hashed(row , mask_field , salt = "hostpitalnu"):
-#     mask = list(row)
-#     for field in mask_field:
-#         index = pii_index.get(field)
-#         if index is not None and index < len(row):
-#             hashed = deterministic_mask(row[index] , salt )
-#             print("startformat")
-#             mask[index] = format_preserving_mask(row[index] , hashed)
-#             print(mask[index])
-#     return mask
 
-def final_hashed2(row , mask_field , salt = "hospitalnu"):
-    copy_dict = row.copy()
-    print("copydict success")
-    
-    print("enter loop")
-    for field in mask_field:
-        print("in loop")
-        if field in copy_dict:
-            hashed = deterministic_mask(copy_dict[field] , salt)
-            copy_dict[field] = format_preserving_mask(copy_dict[field] , hashed)
-    
-    return copy_dict
+# mask_field = ['ชื่อนามสกุล','รหัสบัตรประชาชน' ,'เลขกรมธรรม์']  
 
-    
 
-mask_field = ['ชื่อนามสกุล','รหัสบัตรประชาชน' ,'เลขกรมธรรม์']  
 
-# raw_data , head = fetch_excel('hospital_data.xlsx')
-# raw_data = [dict(zip(head, row)) for row in raw_data]
-# print(raw_data)
+def final_hashed(row , mask_field , salt = "hospitalnu"):
 
-# def final_hashed3(row , mask_field , salt = "hospitalnu"):
 
-def final_hashed3(row , mask_field , salt = "hospitalnu"):
-    
-    
     for field in mask_field:
         print("in loop")
         if field in row:
@@ -91,23 +56,18 @@ def final_hashed3(row , mask_field , salt = "hospitalnu"):
             print(f"after format {fortmat_hashed}")
             row[field] = fortmat_hashed
             print(row)
-    
+
             
-      
+
         else:print("invalid")
     return row
     
             
-# rows = []
-# for row in raw_data:
-#     hash_row = final_hashed3(row , mask_field , salt = "hostpital")
-#     rows.append(hash_row)
-    
-# print(rows)
 
-rows , header = extract_postgres('hospital')  
 
-dict_row = [dict(zip(header, row)) for row in rows]
+# rows , header = extract_postgres('hospital')  
 
-for row in dict_row:
-    print(final_hashed3(row, mask_field , salt="nuhos"))
+# dict_row = [dict(zip(header, row)) for row in rows]
+
+# for row in dict_row:
+#     print(final_hashed(row, mask_field , salt="nuhos"))

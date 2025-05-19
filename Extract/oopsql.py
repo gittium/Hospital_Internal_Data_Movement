@@ -26,15 +26,12 @@ class ExtractSQL(RuleExtract):
             with self.engine.connect() as conn:
                 result = conn.execute(stmt).fetchall()
                 list_rows = [list(row) for row in result]
-                print(list_rows)
+               
                 
         
         header = ShowTableColumn(self.engine).show()
         
-        return list_rows , header           
-                    
-            
-           
+        return list_rows , header
         
             
             

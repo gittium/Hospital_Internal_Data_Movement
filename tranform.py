@@ -1,56 +1,54 @@
-def upper_name(row):
-    upper_row = row.upper()
-    return upper_row
+from hash_data import final_hashed
 
-def standardize_contact(row):
-    if row.startswith("0") :
-        return "+66"+row[1:]
-    
-    if row.startswith("+66"):
-        return row
-    
-    else :
-        return row
-    
+class Tranform:
+
+    def __init__(self , row ,mask_fields ):
+        self.row = row
+        self.mask_fields = mask_fields
 
     
 
+    def standardize_contact(self):
+       
+            if self.row['เบอร์โทรศัพท์'].startswith("66") :
+                return "0"+self.row['เบอร์โทรศัพท์'][1:]
+            
+            elif self.row['เบอร์โทรศัพท์'].startswith("+66"):
+                return "0"+self.row['เบอร์โทรศัพท์'][1:]
+            
+            elif self.row['เบอร์โทรศัพท์'].startswith("0") == False:
+                return "0"+self.row['เบอร์โทรศัพท์']
+            
+            elif "-"  in self.row['เบอร์โทรศัพท์']:
+                split_contact = self.row['เบอร์โทรศัพท์'].split("-")
+                clean_contact = "".join(split_contact)
+                
+                return clean_contact
+            
+            elif "_"  in self.row['เบอร์โทรศัพท์']:
+                
+                split_contact = self.row['เบอร์โทรศัพท์'].split("_")
+                clean_contact = "".join(split_contact)
+                
+                return clean_contact
 
-# def tranform_data(raw_data):
+    
+    
     
 
+
+    def tranform_data(self):
+        # Single row is passed, no need to convert to list
+        self.row['เบอร์โทรศัพท์'] = self.standardize_contact()
+        hashed = final_hashed(self.row, self.mask_fields , salt="nuhos")
+        
+        
+        return hashed
+
     
-    
-#     rows = list(raw_data)
-    
-#     list_row_dict = []
-    
-#     for row in rows:
-#         row_dict = {
-#         'hospital_name' : upper_name(row[0]),
-#         'hospital_branch' : upper_name(row[1]),
-#         'contact' : standardize_contact(row[2]),
-#         'patient_name' : nine_address(row[3])
-#         }
-#         list_row_dict.append(row_dict)
-    
-#     return list_row_dict
+
+    # mask_field = ['ชื่อนามสกุล','รหัสบัตรประชาชน' ,'เลขกรมธรรม์']  
 
 
 
-# cleaned_data = [
-#     ["Sirirat", "CNX", "+6680",  "eaaf_fbad"],
-#     ["Sirirat", "CNX", "+6680", "eaaf_fbad"],
-#     ["Sirirat", "CNX", "+6680",  "eaaf_fbad"]
-# ]
-# print(tranform_data(cleaned_data))
-def tranform_data(raw_data):
-    # Single row is passed, no need to convert to list
-    row_dict = {
-        'hospital_name': upper_name(raw_data[1]),
-        'hospital_branch': upper_name(raw_data[2]),
-        'contact': standardize_contact(raw_data[3]),
-        'patient_name': raw_data[4]
-    }
     
-    return row_dict
